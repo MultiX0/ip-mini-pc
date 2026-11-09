@@ -1,0 +1,24 @@
+# Orion Hub for CasaOS: + next to Apps, Install a customized app, the import button at the top, paste this, Submit, OK, Install.
+# Put your own Anthropic key in ANTHROPIC_API_KEY first. Image: multix00/orion-hub on Docker Hub (linux/amd64 and linux/arm64).
+# Source and docs: https://github.com/MultiX0/orion/tree/main/hub
+name: orion-hub
+services:
+  orion-hub:
+    image: multix00/orion-hub:latest
+    container_name: orion-hub
+    restart: unless-stopped
+    network_mode: host   # the board finds the hub on your network (mDNS), and the agent can scan the LAN
+    pid: host            # lets the agent run commands on the server itself
+    privileged: true     # needed for that
+    environment:
+      ANTHROPIC_API_KEY: "paste-your-anthropic-key-here"
+      TZ: Asia/Amman     # your time zone
+    volumes:
+      - /DATA/AppData/orion-hub:/var/lib/orion-hub    # paired devices, memory, sessions, logs
+      - /var/run/docker.sock:/var/run/docker.sock     # so the agent can install and manage apps
+x-casaos:
+  main: orion-hub
+  port_map: "8780"
+  icon: https://raw.githubusercontent.com/MultiX0/orion/main/brand/assets/logo.png
+  title:
+    en_us: Orion Hub

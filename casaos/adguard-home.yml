@@ -1,0 +1,17 @@
+# AdGuard Home for CasaOS: + next to Apps, Install a customized app, the import button at the top, paste this, Submit, OK, Install.
+# Host networking so AdGuard sees every device's real IP (per-device stats and rules).
+name: adguardhome
+services:
+  adguardhome:
+    image: adguard/adguardhome:latest
+    container_name: adguardhome
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /DATA/AppData/adguardhome/work:/opt/adguardhome/work
+      - /DATA/AppData/adguardhome/conf:/opt/adguardhome/conf
+x-casaos:
+  main: adguardhome
+  port_map: "3000"
+  title:
+    en_us: AdGuard Home
